@@ -119,7 +119,7 @@ class EDebug{
         $msg = error_get_last();
         $info = "";
         if($msg){
-            $info = date('md H:i:s ',time()).self::reporteRule()[$msg['type']] . ' ';
+            $info = date('Ymd H:i:s ',time()).self::reporteRule()[$msg['type']] . ' ';
             $info .= $msg['message'] . ' in file ' ;
             $info .= $msg['file'] . ' on line ';
             $info .= $msg['line']."\r\n";
