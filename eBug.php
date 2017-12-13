@@ -25,7 +25,7 @@ class EDebug{
     public $baseUri = 'http://js.e01.com';
     public $lines = 20;      //显示日志的最后20条
 
-    function __construct()
+    /* function __construct()
     {
         extract($_REQUEST);
         // 初始化日志路径
@@ -40,7 +40,29 @@ class EDebug{
         } else {
             $this->putinLog();
         }
+    } */
+    
+    
+    function __construct(){
+        global $oper;
+        $this->processData();
+        if(method_exists($this,$oper."Log")){
+            $this->{$oper."Log"}();
+        }
     }
+    
+    
+    //处理传入的参数
+    public function processData(){
+        //从$_REQUSEA中获取参数的名称
+        $keys = array_keys($_REQUEST);
+        extract($_REQUEST);
+        for($i = 0; $i < count($keys); $i ++){
+            $keyName = $keys[$i];
+            $GLOBALS[$keys[$i]] = $$keyName;
+        }
+    }
+    
     //消除日志
     public function clearLog(){
         $filename = $this->readPath ? self::$basePath.$this->readPath : self::$logPath;
@@ -143,7 +165,7 @@ class EDebug{
         return $info;
     }
         
-        // 读取日志内容
+    // 读取日志内容
     public function readLog()
     {
         $readPath = $this->readPath ? self::$basePath . $this->readPath : self::$logPath;
