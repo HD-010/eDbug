@@ -64,6 +64,15 @@ class EDebug{
         echo $strHtml;
     }
     
+    //格式化json代码
+    public function getCodeFormate(){
+        global $data;
+        header("Access-Control-Allow-Origin:*");
+        $data = json_decode($data);
+        $strHtml = $this->eachElement($data);
+        echo $strHtml;
+    }
+    
     //获取格式化后的代码列表
     public function getCodeList(){
         header("Access-Control-Allow-Origin:*");
@@ -93,9 +102,7 @@ class EDebug{
     }
     
     //格式化json代码
-    public function eachElement() {
-        global $data;
-        $data = json_decode($data);
+    public function eachElement($data) {
         $str = "";
         if (is_object($data)) {
             $str .= "{";
@@ -104,7 +111,7 @@ class EDebug{
                 if (!is_object($v) && !is_array($v)) {
                     $str .= "<font source=object>" . $k . " : ". $v . "</font>";
                 } else {
-                    $str .= $k + ":" + $this->eachElement($v);
+                    $str .= "<font source=object>" . $k . ":" . $this->eachElement($v) . "</font>";
                 }
                 $str .= "</span>";
             }
@@ -116,7 +123,7 @@ class EDebug{
                 if (!is_object($v) && !is_array($v)) {
                     $str .= "<font source=array>" . $v	. "</font>";
                 } else {
-                    $str .= $this->eachElement($v);
+                    $str .= "<font source=array>" . $this->eachElement($v)	. "</font>";
                 }
                 $str .= "</span>";
             }

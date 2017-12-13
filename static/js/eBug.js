@@ -8,11 +8,13 @@ var logObj = {
 	//格式化的json代码
 	code:"",
 	//格式化代码展示背景色
-	baseColor : [ "#006600", "#CC66CC", "#666666", "#336633", "#996699", "#FF66FF" ],
+	baseColor : [ "#006600", "#CC66CC", "#666666", "#336633", "#996699", "#FF66FF","#B8860B","#000080","#48D1CC"],
 	//当前使用颜色
 	color:"",
-	// 日志对象
+	// 日志对象 ,一条记录
 	logData : "",
+	//日志 序列号
+	sialize : "",
 	// 日志读取标识
 	readTag : 'log',
 	
@@ -50,49 +52,9 @@ var logObj = {
 			if (status == 'F') {
 				viewLog('还没有日志', 'success');
 			} else {
-				$.ajax({
-					url : logObj.serverUrl,
-					type : 'POST',
-					dataType : 'TEXT',
-					data : {
-						oper : "parseFormate",
-						data : dataStr
-					},
-					success : logObj.viewLog,
-					error : function(data) {
-						console.log(data);
-						alert("错误");
-					},
-				});
+				logObj.parseCode(dataStr,'parseFormate',logObj.viewLog);
 			}
 		}
-	},
-	
-	//展示格式化后的代码
-	viewCode:function(data,status){
-		if(status != 'success') {return;}
-		var codeList = $("[name=codeList]").html();
-		$("[name='codeList']").html(codeList + data);
-		this.setViewSize();
-		this.setColor(o, sialize);
-	},
-	
-	//格式化json代码
-	eachElement:function(){
-		$.ajax({
-			url : logObj.serverUrl,
-			type : 'POST',
-			dataType : 'TEXT',
-			data : {
-				oper : "codeList",
-				data : logObj.code,
-			},
-			success : logObj.viewCode,
-			error : function(data) {
-				console.log(data);
-				alert("错误");
-			},
-		});
 	},
 	
 	//设置代码格式化背景
@@ -125,60 +87,59 @@ var logObj = {
 			"overflow" : "scroll"
 		});
 	},
+	//根据sialize删除格式化后的代码
+	removeCode:function(){
+		$(this.logData).attr("sialize", "");
+		$("div[sialize=" + this.logData.sialize + "]").remove();
+		this.setViewSize();
+		this.setColor(this.logData, 0);
+	},
+	
+	//展示格式化后的代码
+	viewCode:function(data,status){
+		str = "<div name=list sialize="	+ logObj.logData.sialize + ">" + data + "</div>";
+		var codeList = $("[name=codeList]").html();
+		$("[name='codeList']").html(codeList + str);
+		logObj.setViewSize();
+		logObj.setColor(logObj.logData, logObj.logData.sialize);
+	},
+	
+	//格式化json代码
+	parseCode:function(data,oper,callBack){
+		$.ajax({
+			url : logObj.serverUrl,
+			type : 'POST',
+			dataType : 'TEXT',
+			data : {
+				oper : oper,
+				data : data,
+			},
+			success : callBack,
+			error : function(data) {
+				console.log(data);
+				alert("错误");
+			},
+		});
+	},
+	//根据sialize添加格式化后的代码
+	addCode:function(o, sialize){
+		//添加格式化后的代码
+		this.logData.sialize = Date.parse(new Date());
+		$(this.logData).attr("sialize", this.logData.sialize);
+		var code = $(this.logData).siblings("[name='code']").text();
+		this.parseCode(code,'codeFormate',logObj.viewCode);
+	},
 	
 	//格式化代码
 	formateCode:function(o){
-		var sialize = $(o).attr("sialize");
-		if (!sialize) {
-			sialize = Date.parse(new Date());
-			$(o).attr("sialize", sialize);
-			var code = $(o).siblings([ name = code ]).text();
-			var str = $(o).siblings("[name='list']").html();
-			code = eval("(" + code + ")");
-			var str = eachElement(code);
-			str = "<div name=list sialize="	+ sialize + ">" + str + "</div>";
-			var codeList = $("[name=codeList]").html();
-			$("[name='codeList']").html(codeList + str);
-			this.setViewSize();
-			this.setColor(o, sialize);
-		} else {
-			$(o).attr("sialize", "");
-			$("div[sialize=" + sialize + "]").remove();
-			this.setViewSize();
-			this.setColor(o, 0);
-		}
-	}
+		this.logData = o;
+		this.logData.sialize = $(this.logData).attr("sialize");
+		//sialize不知存在则添加格式代码，存在则删除
+		this.logData.sialize ? this.removeCode() : this.addCode();
+	},
+
 };
 
 // 获取日志内容并将日志内容显示到布局中
 logObj.logContents();
-	
-function eachElement(o) {
-	var str = "";
-	if (Object.prototype.toString.call(o) == "[object Object]") {
-		str += "{";
-		for ( var k in o) {
-			str += "<span name=st>";
-			if (typeof o[k] != "object") {
-				str += "<font source=object>" + k + " : "+ o[k] + "</font>";
-			} else {
-				str += k + ":" + eachElement(o[k]);
-			}
-			str += "</span>";
-		}
-		str += "}";
-	} else if (Object.prototype.toString.call(o) == "[object Array]") {
-		str += "[";
-		for ( var k in o) {
-			str += "<span name=st>";
-			if (typeof o[k] != "object") {
-				str += "<font source=array>" + o[k]	+ "</font>";
-			} else {
-				str += eachElement(o[k]);
-			}
-			str += "</span>";
-		}
-		str += "]";
-	}
-	return str;
-}
+
