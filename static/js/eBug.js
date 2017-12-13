@@ -47,22 +47,7 @@ var logObj = {
 	 * callBack 回调函数
 	 * uri 测试服端接口 该参数默认是服务端接口
 	 */
-	tranceData:function(data,oper,callBack,uri){
-		$.ajax({
-			url : uri || logObj.serverUrl,
-			type : 'POST',
-			dataType : 'TEXT',
-			data : {
-				oper : oper,
-				data : data,
-			},
-			success : callBack,
-			error : function(data) {
-				console.log(data);
-				alert("错误");
-			},
-		});
-	},
+
 	
 	// 获取要显示的日志内容
 	tranceLog:function(data, status) {

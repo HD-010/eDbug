@@ -92,7 +92,7 @@ class EDebug{
     public function getFunc(){
         global $data;
         $code = [];
-        $code['clear'] = 'file_put_contents($fileName,"")';
+        $code['clear'] = 'file_put_contents($fileName,"");echo 5';
         header("Access-Control-Allow-Origin:*");
         echo htmlspecialchars($code[$data]);
     }
