@@ -152,7 +152,7 @@ var logObj = {
 		var url = this.baseUrl+"/?debug";
 		this.tranceData('clear','func',function(data){
 			logObj.tranceData(data,'func',function(data){
-				console.log(data);
+				location.href=this.baseUrl+"/?debug";
 			},url);
 		});
 	},
