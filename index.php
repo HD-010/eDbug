@@ -25,15 +25,23 @@ class EDebug{
     public $baseUri = 'http://js.e01.com';
 
     function __construct(){
-        extract($_REQUEST);
-        $main = ucfirst($oper);
-        
+        global $oper;
+        //处理传入的参数
+        $this->processData();     
+        $main = ucfirst($oper);      
         if(method_exists($this,'get'.$main)){
-            if(isset($data)){
-                $GLOBALS['data'] = $data;
-            }
-            $funcname = 'get'.$main;
-            $this->$funcname();
+            $this->{'get'.$main}();
+        }
+    }
+    
+    //处理传入的参数
+    public function processData(){
+        //从$_REQUSEA中获取参数的名称
+        $keys = array_keys($_REQUEST);
+        extract($_REQUEST);
+        for($i = 0; $i < count($keys); $i ++){
+            $keyName = $keys[$i];
+            $GLOBALS[$keys[$i]] = $$keyName;
         }
     }
 
@@ -80,6 +88,15 @@ class EDebug{
         echo $strHtml;
     }
     
+    //调试服务端功能扩展
+    public function getFunc(){
+        global $data;
+        $code = [];
+        $code['clear'] = '$this->clearLog();';
+        header("Access-Control-Allow-Origin:*");
+        echo htmlspecialchars($code[$data]);
+    }
+    
     //格式化日志为html代码
     public function logFormate(){
         global $data;
@@ -97,7 +114,6 @@ class EDebug{
                 $contents .= "<p>".$line."</p>\r\n";
             }
         }
-        
         return $contents;
     }
     

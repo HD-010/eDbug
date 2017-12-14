@@ -40,6 +40,15 @@ var logObj = {
 		});
 	},
 	
+	/**
+	 * 传输待处理数据
+	 * oper  操作方式
+	 * data  需要处理的数据
+	 * callBack 回调函数
+	 * uri 测试服端接口 该参数默认是服务端接口
+	 */
+
+	
 	// 获取要显示的日志内容
 	tranceLog:function(data, status) {
 		if (status == 'success') {
@@ -52,7 +61,7 @@ var logObj = {
 			if (status == 'F') {
 				viewLog('还没有日志', 'success');
 			} else {
-				logObj.parseCode(dataStr,'parseFormate',logObj.viewLog);
+				logObj.tranceData(dataStr,'parseFormate',logObj.viewLog);
 			}
 		}
 	},
@@ -105,9 +114,9 @@ var logObj = {
 	},
 	
 	//格式化json代码
-	parseCode:function(data,oper,callBack){
+	tranceData:function(data,oper,callBack,uri){
 		$.ajax({
-			url : logObj.serverUrl,
+			url : uri || logObj.serverUrl,
 			type : 'POST',
 			dataType : 'TEXT',
 			data : {
@@ -117,17 +126,17 @@ var logObj = {
 			success : callBack,
 			error : function(data) {
 				console.log(data);
-				alert("错误");
 			},
 		});
 	},
+	
 	//根据sialize添加格式化后的代码
 	addCode:function(o, sialize){
 		//添加格式化后的代码
 		this.logData.sialize = Date.parse(new Date());
 		$(this.logData).attr("sialize", this.logData.sialize);
 		var code = $(this.logData).siblings("[name='code']").text();
-		this.parseCode(code,'codeFormate',logObj.viewCode);
+		this.tranceData(code,'codeFormate',logObj.viewCode);
 	},
 	
 	//格式化代码
@@ -137,9 +146,20 @@ var logObj = {
 		//sialize不知存在则添加格式代码，存在则删除
 		this.logData.sialize ? this.removeCode() : this.addCode();
 	},
+	
+	//清空测试服务端日志
+	clear : function (){
+		var url = this.baseUrl+"/?debug";
+		this.tranceData('clear','func',function(data){
+			logObj.tranceData(data,'func',function(data){
+				location.href=this.baseUrl+"/?debug";
+			},url);
+		});
+	},
 
 };
 
 // 获取日志内容并将日志内容显示到布局中
-logObj.logContents();
+logObj.tranceData('debug','read',logObj.tranceLog,logObj.baseUrl+"/?debug");
+//logObj.logContents();
 
