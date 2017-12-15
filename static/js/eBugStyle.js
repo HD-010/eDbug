@@ -1,7 +1,3 @@
-/**
- * 
- */
-
 $(document).ready(function() {
 	var cicleNumbre = 1;
 	var baseColor = [ "#006600", "#CC66CC", "#666666",
@@ -47,36 +43,6 @@ $(document).ready(function() {
 		}
 	}
 
-	function eachElement(o) {
-		var str = "";
-		if (Object.prototype.toString.call(o) == "[object Object]") {
-			str += "{";
-			for ( var k in o) {
-				str += "<span name=st>";
-				if (typeof o[k] != "object") {
-					str += "<font source=object>" + k + " : "+ o[k] + "</font>";
-				} else {
-					str += k + ":" + eachElement(o[k]);
-				}
-				str += "</span>";
-			}
-			str += "}";
-		} else if (Object.prototype.toString.call(o) == "[object Array]") {
-			str += "[";
-			for ( var k in o) {
-				str += "<span name=st>";
-				if (typeof o[k] != "object") {
-					str += "<font source=array>" + o[k]	+ "</font>";
-				} else {
-					str += eachElement(o[k]);
-				}
-				str += "</span>";
-			}
-			str += "]";
-		}
-		return str;
-	}
-
 	function setViewSize() {
 		var views = $("div[name=codeList]").children().length;
 		views = views > 4 ? 4 : views;
@@ -91,9 +57,51 @@ $(document).ready(function() {
 	}
 
 	$("li[name=t1]").mouseover(function() {
-		$("ul[name=t2]").css("display", "block")
+		$("ul[name=t2]").css("visibility", "visible")
 	});
 	$("li[name=t1]").mouseout(function() {
-		$("ul[name=t2]").css("display", "none")
+		$("ul[name=t2]").css("visibility", "hidden")
 	});
 });
+
+var wget = {
+	//用户偏好设置视图部件
+	setUp : function (){
+		var str = this.closeBt();
+		str = this.addFunc("noticeBack",str);	//添关闭按钮到提示框
+		str = this.addFunc("mask",str);			//添加提示框到蒙版
+		this.setWget(str);
+	},
+	
+	closeBox : function (){
+		$("div[name=mask]").remove();
+	},
+	
+	//蒙板
+	mask : function(content){
+		content = content || "这里添加内容";
+		return "<div name=mask>"+content+"</div>";
+	},
+	
+	//提示框背景
+	noticeBack : function (content){
+		return "<div name=noticeBack>"+content+"</div>";
+	},
+	
+	//将contents添加到视图部件func
+	addFunc : function(func,contents){
+		return eval("(this." + func + "(contents))");
+	},
+	
+	//将视图部件添加到obj对象
+	setWget : function(contents,obj){
+		obj = obj || $("body");
+		$(obj).append(contents);
+	},
+	
+	/*-------------------------------------以下为视图部件内容区--------------------------------------*/
+	closeBt : function (){
+		return "<div name=colseBt><a href=javascript:wget.closeBox()>&#215;</a></div>";
+	}
+	/*-------------------------------------end--------------------------------------*/
+}

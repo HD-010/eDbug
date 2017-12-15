@@ -24,17 +24,17 @@ class EDebug
     public static $addInfo = [];
     // 附加信息
     public static $basePath = __DIR__;
-
-    public static $readOnly = '';
     // 真为只读
+    public static $readOnly = '';
+    
     public $writePath = '/elog.html';
-
-    public $readPath = '';
     // 配置读日志文件路径
+    public $readPath = '';
+    
     public $baseUri = 'http://js.e01.com';
-
-    public $lines = 20;
     // 显示日志的最后20条
+    public $lines = 20;
+    
     function __construct()
     {
         // 初始化日志路径
@@ -196,7 +196,9 @@ class EDebug
         } else {
             $lineContet[] = 'T'; // 添加日志读取成功状态
             $contents = file($readPath, FILE_IGNORE_NEW_LINES);
-            for ($i = 0; $i < count($contents); $i ++) {
+            $totalLines = count($contents) - 1;
+            $lines = 1;
+            for ($i = $totalLines; $i > $totalLines - $lines; $i --) {
                 $lineContet[] = trim($contents[$i]);
             }
             $lineContet[] = '`DE`';
