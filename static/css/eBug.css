@@ -22,10 +22,25 @@ div[name="codeList"]{max-width:75%;display:block;border:0;background-color:white
 font{display: inline-block;border: 0;}
 
 /* 蒙版样式 */
+div[name="maskParent"]{
+	border: 1px solid black;
+    width: 100%;
+    height: 100%;
+	padding-left:50px;
+	padding-right:50px;
+    background-color: #FFFFFF;
+    float: right;
+    position: fixed;
+    right: 0;
+    top: 0;
+    background:rgba(0, 0, 0, 0);
+}
 div[name="mask"]{
 	border: 1px solid black;
     min-width: 250px;
     height: 100%;
+	padding-left:50px;
+	padding-right:50px;
     background-color: black;
     float: right;
     position: fixed;
@@ -58,5 +73,16 @@ div[name="noticeBack"]{
 	opacity:10;
 	position: relative;
 	top: 35%;
+	background-color:#FFFFFF;
+}
+
+/* 用户偏好设置样式 */
+div[name="setUpBack"]{
+	width:500px;
+	padding:24px 6px 24px 6px;
+	border:0;
+	opacity:1;
+	position: relative;
+	top: 60px;
 	background-color:#FFFFFF;
 }

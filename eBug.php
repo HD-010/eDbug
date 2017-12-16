@@ -197,13 +197,33 @@ class EDebug
             $lineContet[] = 'T'; // 添加日志读取成功状态
             $contents = file($readPath, FILE_IGNORE_NEW_LINES);
             $totalLines = count($contents) - 1;
-            $lines = 1;
+            $lines = $this->get_array_value($_COOKIE,"showLines",5);
             for ($i = $totalLines; $i > $totalLines - $lines; $i --) {
                 $lineContet[] = trim($contents[$i]);
             }
             $lineContet[] = '`DE`';
         }
         echo implode('`p`', $lineContet);
+    }
+    
+    /**
+     * 返回key对应的值，如果不存在，则返回"",异常则抛出异常;
+     * @param array $array
+     * @param string $key  如key 或key1.key2.key3
+     */
+    public function get_array_value($array,$key,$defaultValue=null){
+        $keys = explode('.', $key);
+        $error = $defaultValue;
+        $value = false;
+        if(!is_array($array)) return false;
+        foreach ($keys as $val) {
+            if (! is_array($array)) {
+                return $error;
+            }
+            $array = array_key_exists($val, $array) ? $array[$val] : false;
+            $value = $array;
+        }
+        return $value;
     }
 
     /**
