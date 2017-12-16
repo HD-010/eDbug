@@ -1,5 +1,38 @@
 $(document).ready(function() {$("body").html(bodyContents);});
 
+//公共对象
+var common = {
+	//将字符串的首字母大写
+	ucFirst : function (str){
+		return str.substring(0,1).toUpperCase()+str.substring(1);
+	},
+	
+	//设置cookie
+	setCookie : function (name,value,days){
+	    var exp = new Date();
+	    exp.setTime(exp.getTime() + days*24*60*60*1000);
+	    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
+	},
+	
+	//获取cookie常用方法
+	getCookies : function (name){
+		var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+		if(arr=document.cookie.match(reg))
+		return unescape(arr[2]);
+		else
+		return null;
+	},
+	
+	//将表单属性写入cookie,时长7天
+	setCookieOption : function (obj){
+		common.setCookie($(obj).attr('name'),$(obj).val(),7);
+	},
+}
+
+
+
+
+
 // 从测试环境获取日志对象
 var logObj = {
 	// 调试环境baseUrl
@@ -23,21 +56,6 @@ var logObj = {
 		if (status == 'success') {
 			$('[name="contents"]').html(data);
 		}
-	},
-	
-	// 获取日志内容
-	logContents : function() {
-		var url = this.baseUrl + '/?log';
-		$.ajax({
-			url : url,
-			oper : this.readTag,
-			type : 'POST',
-			crossDomain : true,
-			success : this.tranceLog,
-			error : function() {
-				alert("错误");
-			}
-		});
 	},
 	
 	/**
@@ -161,5 +179,4 @@ var logObj = {
 
 // 获取日志内容并将日志内容显示到布局中
 logObj.tranceData('debug','read',logObj.tranceLog,logObj.baseUrl+"/?debug");
-//logObj.logContents();
 

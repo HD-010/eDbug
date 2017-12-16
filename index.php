@@ -63,6 +63,14 @@ class EDebug{
         echo $contents;
         
     }
+   
+    //获取视图小部件
+    public function getWget(){
+        global $data;
+        header("Access-Control-Allow-Origin:*");
+        $contents = file_get_contents('./view/wget/'.$data.'.htm');
+        echo $contents;
+    }
     
     //解析日志类型
     public function getParseFormate(){

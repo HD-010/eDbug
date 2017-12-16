@@ -17,15 +17,35 @@ font[name=tag]{height:16px;border-radius:8px;line-height:16px;color:red;border:1
 span[name="code"]{;border:1px solid #DFDFDF;padding:4px;display:block;word-wrap:break-word; word-break:break-all; }
 font[source="array"]{padding:1px 4px 1px 4px;margin:2px;border-radius:4px;display:inline-block;border:0;background-color:#D2691E;color:#FFFFFF;word-wrap:break-word; word-break:break-all; }
 font[source="object"]{padding:1px 4px 1px 4px;margin:2px;border-radius:4px;display:inline-block;border:0;background-color:;color:#FFFFFF;word-wrap:break-word; word-break:break-all; }
-div[name="list"]{height:600px;overflow:scroll;display:block;padding:6px;border:1px solid #F0F8FF;background-color:white;float:right;margin-top:1%;color:#FFFFFF;}
-div[name="codeList"]{max-width:75%;display:block;border:0;background-color:white;position:absolute;right:0;top:61px;}
+div[name="list"]{overflow:scroll;display:block;padding:6px;border:1px solid #F0F8FF;background-color:white;float:right;margin-top:1%;color:#FFFFFF;}
+div[name="codeList"]{max-width:75%;display:block;border:0;background-color:white;position:fixed;right:0;top:61px;}
 font{display: inline-block;border: 0;}
 
 /* 蒙版样式 */
+div[name="maskParent"]{
+	border: 1px solid black;
+    width: 100%;
+    height: 100%;
+	padding-left:50px;
+	padding-right:50px;
+    background-color: #FFFFFF;
+    float: right;
+    position: fixed;
+    right: 0;
+    top: 0;
+    background:rgba(0, 0, 0, 0);
+}
+div[name="maskParentTag"]{
+	border:0;
+	width:100%;
+	height:100%;
+}
 div[name="mask"]{
 	border: 1px solid black;
     min-width: 250px;
     height: 100%;
+	padding-left:50px;
+	padding-right:50px;
     background-color: black;
     float: right;
     position: fixed;
@@ -58,5 +78,16 @@ div[name="noticeBack"]{
 	opacity:10;
 	position: relative;
 	top: 35%;
+	background-color:#FFFFFF;
+}
+
+/* 用户偏好设置样式 */
+div[name="setUpBack"]{
+	width:500px;
+	padding:24px 6px 24px 6px;
+	border:0;
+	opacity:1;
+	position: relative;
+	top: 60px;
 	background-color:#FFFFFF;
 }
