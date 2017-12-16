@@ -31,21 +31,20 @@ div[name="mask"]{
     position: fixed;
     right: 0;
     top: 0;
-    opacity: 0.6;
+    background:rgba(0, 0, 0, 0.6);
 }
 
 /* 窗口关闭按钮样式 */
 div[name="colseBt"]{
-    height: 26PX;
+    height: 26px;
     width: 26px;
-	opacity:1;
 	position: relative;
     top: 0;
     left: 90%;
     border-radius: 13px;
     color: white;
     background-color: red;
-	font-size: 20px;
+	font-size: 26px;
     text-align: center;
     line-height: 26px;
     font-weight: 700;
@@ -59,5 +58,5 @@ div[name="noticeBack"]{
 	opacity:10;
 	position: relative;
 	top: 35%;
-	background-image: url("http://js.e01.com/static/images/notice_bk.png");
+	background-color:#FFFFFF;
 }

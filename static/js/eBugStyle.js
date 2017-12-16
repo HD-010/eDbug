@@ -95,7 +95,7 @@ var wget = {
 	
 	//将视图部件添加到obj对象
 	setWget : function(contents,obj){
-		obj = obj || $("body");
+		obj = obj || document.body;
 		$(obj).append(contents);
 	},
 	
