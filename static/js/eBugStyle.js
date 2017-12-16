@@ -62,7 +62,20 @@ $(document).ready(function() {
 	$("li[name=t1]").mouseout(function() {
 		$("ul[name=t2]").css("visibility", "hidden")
 	});
+	
+	$("div[name=maskTag]").on("click",function(){
+		$("div[name=parentMask]").remove()
+	})
 });
+
+
+
+var styles = {
+	//设置取消遮罩事件
+	cancleMask : function(obj){
+		$("div[name=maskParent]").remove();
+	},
+}
 
 
 
@@ -108,7 +121,7 @@ var wget = {
 	// 全屏遮罩
 	fullMask : function(content) {
 		content = content || "这里添加内容";
-		return "<div name=maskParent>" + content + "</div>";
+		return "<div name=maskParent><div name=maskParentTag onclick=styles.cancleMask()></div>" + content + "</div>";
 	},
 	
 	//部份遮罩

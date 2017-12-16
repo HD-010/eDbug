@@ -1,8 +1,5 @@
 $(document).ready(function() {$("body").html(bodyContents);});
 
-
-
-
 //公共对象
 var common = {
 	//将字符串的首字母大写
@@ -59,21 +56,6 @@ var logObj = {
 		if (status == 'success') {
 			$('[name="contents"]').html(data);
 		}
-	},
-	
-	// 获取日志内容
-	logContents : function() {
-		var url = this.baseUrl + '/?log';
-		$.ajax({
-			url : url,
-			oper : this.readTag,
-			type : 'POST',
-			crossDomain : true,
-			success : this.tranceLog,
-			error : function() {
-				alert("错误");
-			}
-		});
 	},
 	
 	/**
