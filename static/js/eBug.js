@@ -1,5 +1,14 @@
 $(document).ready(function() {$("body").html(bodyContents);});
 
+//自启动项
+setInterval(auto,1000);
+function auto(){
+	console.log("auto");
+}
+//自动刷新
+
+
+
 //公共对象
 var common = {
 	//将字符串的首字母大写
@@ -25,7 +34,16 @@ var common = {
 	
 	//将表单属性写入cookie,时长7天
 	setCookieOption : function (obj){
-		common.setCookie($(obj).attr('name'),$(obj).val(),7);
+		var name,val,type;
+		
+		name = $(obj).attr('name');
+		val = $(obj).val();
+		type = $(obj).attr('type');
+		
+		if(type = 'checkbox'){
+			val =  $(obj).is(":checked");
+		}
+		common.setCookie(name,val,7);
 	},
 }
 
