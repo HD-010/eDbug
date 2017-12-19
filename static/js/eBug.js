@@ -58,13 +58,7 @@ var logObj = {
 		}
 	},
 	
-	/**
-	 * 传输待处理数据
-	 * oper  操作方式
-	 * data  需要处理的数据
-	 * callBack 回调函数
-	 * uri 测试服端接口 该参数默认是服务端接口
-	 */
+	
 
 	
 	// 获取要显示的日志内容
@@ -105,14 +99,10 @@ var logObj = {
 	setViewSize:function() {
 		var views = $("div[name=codeList]").children().length;
 		views = views > 4 ? 4 : views;
-		var width = 90 / views + "%";
+		var width = 95 / views + "%";
 		$("div[name=list]").width(width);
-		var height = screen.availHeight - 260 + "px";
+		var height = screen.availHeight - 180 + "px";
 		$("div[name=list]").height(height);
-		$("div[name=codeList]").css({
-			"height" : height,
-			"overflow" : "scroll"
-		});
 	},
 	//根据sialize删除格式化后的代码
 	removeCode:function(){
@@ -131,7 +121,13 @@ var logObj = {
 		logObj.setColor(logObj.logData, logObj.logData.sialize);
 	},
 	
-	//格式化json代码
+	/**
+	 * 传输待处理数据 格式化json代码
+	 * oper  操作方式
+	 * data  需要处理的数据
+	 * callBack 回调函数
+	 * uri 测试服端接口 该参数默认是服务端接口
+	 */
 	tranceData:function(data,oper,callBack,uri){
 		$.ajax({
 			url : uri || logObj.serverUrl,

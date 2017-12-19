@@ -223,7 +223,7 @@ class EDebug
             $array = array_key_exists($val, $array) ? $array[$val] : false;
             $value = $array;
         }
-        return $value;
+        return ($value===false) ? $defaultValue : $value;
     }
 
     /**
