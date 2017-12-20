@@ -1,11 +1,55 @@
 $(document).ready(function() {$("body").html(bodyContents);});
 
-//自启动项
-setInterval(auto,1000);
-function auto(){
-	console.log("auto");
+/*
+ * 自启动项对象
+ * 设置启动项,将需要自启动的项名称加入setOption
+ * 启动项的值 以'true'或'false'两种状态存在于cookie中，值为'true'的项将跟随进程自动启动
+ */
+var auto = {
+	//设置启动项,将需要自启动的项名称加入setOption
+	setOption : [
+	    'showOnChang',
+	],
+	//启动进程
+	process : '',	
+	//启动项（该值对应相应的函数）
+	option : [],
+	//检查启动项
+	check : function(){
+		auto.option = [];
+		for(var o in auto.setOption){
+			if(common.getCookies(auto.setOption[o]) == 'true'){
+				auto.option.push(auto.setOption[o]);
+			}
+		}
+	},
+	
+	//运行启动项
+	run : function (){
+		auto.check();
+		//如果启动项为空，则关掉进程
+		if(auto.option.length === 0){
+			//clearInterval(autoRun);
+			clearInterval(auto.process);
+		}
+		//执行启动项动作
+		for(var a in auto.option){
+			eval("(auto."+auto.option[a]+"())");
+		}
+	},
+	
+	/*---------------以下是启动项对应的动作-----------------------*/
+	showOnChang : function (){
+		console.log(1);
+		// 获取日志内容并将日志内容显示到布局中
+		logObj.tranceData('debug','read',logObj.tranceLog,logObj.baseUrl+"/?debug");
+	},
+	/*------------------------------------------------------*/
 }
-//自动刷新
+
+//开户自启动
+auto.process = setInterval(auto.run,1000);
+
 
 
 
@@ -34,16 +78,18 @@ var common = {
 	
 	//将表单属性写入cookie,时长7天
 	setCookieOption : function (obj){
+		clearInterval(auto.process);
 		var name,val,type;
 		
 		name = $(obj).attr('name');
 		val = $(obj).val();
 		type = $(obj).attr('type');
 		
-		if(type = 'checkbox'){
+		if(type == 'checkbox'){
 			val =  $(obj).is(":checked");
 		}
 		common.setCookie(name,val,7);
+		auto.process = setInterval(auto.run,1000);
 	},
 }
 
